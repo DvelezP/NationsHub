@@ -1,4 +1,4 @@
-##NationsHub
+## NationsHub
 
 Una mini aplicación web desarrollada con **Next.js** y **TailwindCSS** que permite explorar información de todos los países del mundo: banderas, capitales y monedas.
 
