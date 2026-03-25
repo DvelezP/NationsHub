@@ -23,3 +23,24 @@ Centraliza la información geográfica y económica de los países del mundo en 
 - [Next.js](https://nextjs.org/) — Framework de React
 - [TailwindCSS](https://tailwindcss.com/) — Estilos y diseño
 - [RestCountries API](https://restcountries.com/v3.1/all?fields=name,capital,currencies,flags,latlng) — Fuente de datos
+
+## 🧩 Componentes
+
+- `Header` — Barra de navegación visible en todas las páginas
+- `Footer` — Pie de página visible en todas las páginas
+
+## 🌐 API utilizada
+
+**RestCountries v3.1**
+```
+https://restcountries.com/v3.1/all?fields=name,capital,currencies,flags,latlng
+```
+
+Campos usados:
+- `name.common` — Nombre del país
+- `flags.svg` — Bandera
+- `capital` — Capital
+- `currencies` — Moneda
+- `latlng` — Ubicación geográfica
+
+
