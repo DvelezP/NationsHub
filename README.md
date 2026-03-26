@@ -1,46 +1,53 @@
-## NationsHub
+# NationsHub
 
-Una mini aplicación web desarrollada con **Next.js** y **TailwindCSS** que permite explorar información de todos los países del mundo: banderas, capitales y monedas.
+Mini aplicación desarrollada con **Next.js + React + TailwindCSS** para consultar países usando la API de **Rest Countries**.
 
-## Descripción
+## Funcionalidades
 
-NationsHub es una aplicación web que consume la API pública de países [RestCountries](https://restcountries.com/) para mostrar información detallada de cada nación del mundo de forma visual e interactiva.
+- Página de inicio con descripción del proyecto
+- Página de funcionalidad con consumo de API
+- Header y Footer reutilizables
+- Uso de `useState`
+- Uso de `useEffect`
+- Consumo de API con `fetch`
+- Renderizado dinámico de datos
+- Búsqueda de países por nombre
+- Manejo de `loading`
+- Manejo de error básico
 
-## ¿Qué problema resuelve?
+## Endpoint usado
 
-Centraliza la información geográfica y económica de los países del mundo en un solo lugar, permitiendo buscar y filtrar países de forma rápida y sencilla, sin necesidad de buscar en múltiples fuentes.
-
-##  Integrantes del grupo
-
-| Nombre               |
-|----------------------|
-| David Vélez          |
-| Luiz Miguel Giraldo  |
-| Santiago González    |
-
-## Tecnologías utilizadas
-
-- [Next.js](https://nextjs.org/) — Framework de React
-- [TailwindCSS](https://tailwindcss.com/) — Estilos y diseño
-- [RestCountries API](https://restcountries.com/v3.1/all?fields=name,capital,currencies,flags,latlng) — Fuente de datos
-
-## Componentes
-
-- `Header` — Barra de navegación visible en todas las páginas
-- `Footer` — Pie de página visible en todas las páginas
-
-## API utilizada
-
-**RestCountries v3.1**
-```
-https://restcountries.com/v3.1/all?fields=name,capital,currencies,flags,latlng
+```bash
+https://restcountries.com/v3.1/all?fields=name,capital,currencies,flags,region,latlng
 ```
 
-Campos usados:
-- `name.common` — Nombre del país
-- `flags.svg` — Bandera
-- `capital` — Capital
-- `currencies` — Moneda
-- `latlng` — Ubicación geográfica
+## Cómo ejecutar
 
+```bash
+npm install
+npm run dev
+```
 
+Luego abre `http://localhost:3000`.
+
+## Estructura principal
+
+```bash
+app/
+  countries/page.tsx
+  globals.css
+  layout.tsx
+  page.tsx
+components/
+  CountryCard.tsx
+  Footer.tsx
+  Header.tsx
+  SearchBar.tsx
+```
+
+## Qué se eliminó del proyecto base
+
+- Boilerplate visual de Create Next App
+- SVGs por defecto que no se usan
+- Metadatos genéricos del proyecto
+- Estructura duplicada del zip original
