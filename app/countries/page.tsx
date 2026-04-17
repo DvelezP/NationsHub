@@ -1,26 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import CountryCard from "@/components/CountryCard";
+import CountryCard, { type Country } from "@/components/CountryCard";
 import SearchBar from "@/components/SearchBar";
 
-type Country = {
-  name: {
-    common: string;
-  };
-  capital?: string[];
-  flags?: {
-    svg?: string;
-    png?: string;
-    alt?: string;
-  };
-  currencies?: Record<string, { name: string; symbol?: string }>;
-  region?: string;
-  latlng?: number[];
-};
-
-const endpoint =
-  "https://restcountries.com/v3.1/all?fields=name,capital,currencies,flags,region,latlng";
+/**
+ * IMPORTANTE: ahora la app consume NUESTRO backend (puerto 3001),
+ * no la API externa directamente. El backend es el "puente" hacia
+ * restcountries.com. Si cambiamos la fuente de datos, el frontend ni se entera.
+ *
+ * Para produccion, cambiar por una variable de entorno:
+ *   process.env.NEXT_PUBLIC_API_URL
+ */
+const API_BASE = "http://localhost:3001/api";
 
 export default function CountriesPage() {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -34,20 +26,19 @@ export default function CountriesPage() {
         setLoading(true);
         setError("");
 
-        const response = await fetch(endpoint);
+        // GET http://localhost:3001/api/countries
+        const response = await fetch(`${API_BASE}/countries`);
 
         if (!response.ok) {
           throw new Error("No fue posible consultar la API.");
         }
 
-        const data: Country[] = await response.json();
-        const orderedCountries = data.sort((a, b) =>
-          a.name.common.localeCompare(b.name.common)
-        );
-
-        setCountries(orderedCountries);
+        const json: { data: Country[]; total: number } = await response.json();
+        setCountries(json.data); // el backend devuelve { data: [...], total: N }
       } catch (err) {
-        setError("Ocurrió un error cargando los países. Intenta nuevamente.");
+        setError(
+          "Ocurrió un error cargando los países. Verifica que el backend este corriendo en el puerto 3001."
+        );
         console.error(err);
       } finally {
         setLoading(false);
@@ -59,7 +50,7 @@ export default function CountriesPage() {
 
   const filteredCountries = useMemo(() => {
     return countries.filter((country) =>
-      country.name.common.toLowerCase().includes(search.toLowerCase())
+      country.name.toLowerCase().includes(search.toLowerCase())
     );
   }, [countries, search]);
 
@@ -76,11 +67,13 @@ export default function CountriesPage() {
           <p className="mt-3 max-w-3xl text-slate-300">
             Busca países por nombre y revisa su capital, región, moneda y ubicación.
             Esta página usa <span className="font-semibold text-white">useState</span>,
-            <span className="font-semibold text-white"> useEffect</span> y consumo de API con fetch.
+            <span className="font-semibold text-white"> useEffect</span> y consume
+            <span className="font-semibold text-white"> nuestro backend</span> (puerto 3001),
+            que a su vez consulta la API pública de países.
           </p>
         </div>
         <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-100">
-          Endpoint: <span className="font-semibold">/v3.1/all?fields=name,capital,currencies,flags,region,latlng</span>
+          Endpoint: <span className="font-semibold">GET http://localhost:3001/api/countries</span>
         </div>
       </div>
 
@@ -107,7 +100,7 @@ export default function CountriesPage() {
       {!loading && !error && filteredCountries.length > 0 && (
         <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {filteredCountries.map((country) => (
-            <CountryCard key={country.name.common} country={country} />
+            <CountryCard key={country.cca3 ?? country.name} country={country} />
           ))}
         </div>
       )}
