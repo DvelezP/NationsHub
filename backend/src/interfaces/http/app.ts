@@ -47,9 +47,11 @@ export function buildApp(): Application {
       endpoints: {
         health: "GET /health",
         countries: {
-          list: "GET /api/countries",
+          list: "GET /api/countries            (default limit=50)",
           search: "GET /api/countries?search=col",
-          byCode: "GET /api/countries/:code (cca2 o cca3)",
+          withLimit: "GET /api/countries?limit=20",
+          noLimit: "GET /api/countries?limit=all",
+          byCode: "GET /api/countries/:code    (cca2 o cca3)",
         },
       },
     });

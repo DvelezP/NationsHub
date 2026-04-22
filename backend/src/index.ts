@@ -16,10 +16,13 @@ app.listen(env.PORT, () => {
   console.log(`  API externa: ${env.COUNTRIES_API_URL}`);
   console.log("====================================================");
   console.log("  Endpoints:");
+  console.log("   GET    /");
   console.log("   GET    /health");
-  console.log("   GET    /api/countries");
+  console.log("   GET    /api/countries                 (default limit=50)");
   console.log("   GET    /api/countries?search=col");
-  console.log("   GET    /api/countries/:code      (cca2 o cca3)");
+  console.log("   GET    /api/countries?limit=20");
+  console.log("   GET    /api/countries?limit=all       (sin limite)");
+  console.log("   GET    /api/countries/:code           (cca2 o cca3)");
   console.log("====================================================");
   console.log("");
 });
