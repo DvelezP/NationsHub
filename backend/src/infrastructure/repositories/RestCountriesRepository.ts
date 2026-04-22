@@ -110,12 +110,35 @@ export class RestCountriesRepository implements ICountryRepository {
   }
 
   async searchByName(name: string): Promise<Country[]> {
-    const all = await this.findAll();
-    const q = name.toLowerCase();
-    return all.filter(
-      (c) =>
-        c.name.toLowerCase().includes(q) ||
-        (c.officialName?.toLowerCase().includes(q) ?? false)
-    );
+    const q = name.trim();
+    if (!q) return [];
+
+    try {
+      const url = `${this.baseUrl}/name/${encodeURIComponent(
+        q
+      )}?fields=${FIELDS}`;
+      const response = await fetch(url);
+
+      // La API responde 404 cuando no hay coincidencias
+      if (response.status === 404) return [];
+
+      if (!response.ok) {
+        throw new Error(
+          `Error consultando API externa (${response.status} ${response.statusText})`
+        );
+      }
+
+      const data = (await response.json()) as RawRestCountry[];
+      return Array.isArray(data) ? data.map((c) => this.mapToDomain(c)) : [];
+    } catch {
+      // Fallback: si el endpoint directo falla, filtramos desde findAll()
+      const all = await this.findAll();
+      const lower = q.toLowerCase();
+      return all.filter(
+        (c) =>
+          c.name.toLowerCase().includes(lower) ||
+          (c.officialName?.toLowerCase().includes(lower) ?? false)
+      );
+    }
   }
 }
